@@ -1,3 +1,4 @@
+import 'package:dallanteu/user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
@@ -63,6 +64,15 @@ class _MainScreenState extends State<MainScreen> {
                 );
               },
               child: Text("[ QT 소감문 작성 ]"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserScreen()),
+                );
+              },
+              child: Text("[ 나 ]"),
             ),
           ],
         ),
