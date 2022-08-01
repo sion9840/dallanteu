@@ -1,6 +1,8 @@
-import 'package:dallanteu/main_screen.dart';
+import 'package:dallanteu/hive_data_structure.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+
+import 'package:dallanteu/main_screen.dart';
 
 class AttendWorshipScreen extends StatefulWidget {
   @override
@@ -12,7 +14,7 @@ class _AttendWorshipScreenState extends State<AttendWorshipScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("예배 출석"),
+        title: Text("예배 출석 (+ 10 달란트)"),
         centerTitle: true,
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
@@ -34,6 +36,15 @@ class _AttendWorshipScreenState extends State<AttendWorshipScreen> {
               const SizedBox(height: 80.0),
               TextButton(
                 onPressed: (){
+                  Hive.box("user").put(
+                    "attend_worship_log",
+                    Hive.box("user").get("attend_worship_log") + [
+                      AttendWorshipLog(
+                        DateTime.now(),
+                        10,
+                      ),
+                    ]
+                  );
                   Hive.box("user").put(
                     "dallanteu",
                     Hive.box("user").get("dallanteu") + 10,

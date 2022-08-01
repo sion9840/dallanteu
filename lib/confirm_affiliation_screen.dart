@@ -1,6 +1,8 @@
-import 'package:dallanteu/main_screen.dart';
+import 'package:dallanteu/hive_data_structure.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+
+import 'package:dallanteu/main_screen.dart';
 
 class ConfirmAffiliationScreen extends StatefulWidget {
   @override
@@ -47,7 +49,9 @@ class _ConfirmAffiliationScreenState extends State<ConfirmAffiliationScreen> {
                   });
 
                   Hive.box("user").put("affiliation_code", user_code.text);
-                  Hive.box("user").put("dallanteu", 0);
+                  Hive.box("user").put("dallanteu", 100);
+                  Hive.box("user").put("attend_worship_log", <AttendWorshipLog>[]);
+                  Hive.box("user").put("write_qt_testimonial_log", <WriteQtTestimonialLog>[]);
 
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (BuildContext context) =>

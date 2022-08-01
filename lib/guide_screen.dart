@@ -1,5 +1,6 @@
-import 'package:dallanteu/confirm_affiliation_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dallanteu/confirm_affiliation_screen.dart';
 
 class GuideScreen extends StatefulWidget {
   @override
