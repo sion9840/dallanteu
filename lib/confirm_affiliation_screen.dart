@@ -50,8 +50,8 @@ class _ConfirmAffiliationScreenState extends State<ConfirmAffiliationScreen> {
 
                   Hive.box("user").put("affiliation_code", user_code.text);
                   Hive.box("user").put("dallanteu", 100);
-                  Hive.box("user").put("attend_worship_log", <AttendWorshipLog>[]);
-                  Hive.box("user").put("write_qt_testimonial_log", <WriteQtTestimonialLog>[]);
+                  Hive.box("user").put("attend_worship_log", <DateTime, AttendWorshipLog>{});
+                  Hive.box("user").put("write_qt_testimonial_log", <DateTime, WriteQtTestimonialLog>{});
 
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                       builder: (BuildContext context) =>

@@ -1,8 +1,10 @@
+import 'dart:html';
+
 import 'package:dallanteu/hive_data_structure.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-import 'package:dallanteu/main_screen.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -11,50 +13,15 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   int dallanteu = Hive.box("user").get("dallanteu");
+  Map<DateTime ,AttendWorshipLog> attend_worship_log = Hive.box("user").get("attend_worship_log");
+  Map<DateTime, WriteQtTestimonialLog> write_qt_testimonial_log = Hive.box("user").get("write_qt_testimonial_log");
 
   @override
   Widget build(BuildContext context) {
-    List<AttendWorshipLog> attend_worship_log = Hive.box("user").get("attend_worship_log");
-    List<WriteQtTestimonialLog> write_qt_testimonial_log = Hive.box("user").get("write_qt_testimonial_log");
-    List<CalendarEventData> events = [];
-
-    attend_worship_log.forEach(
-      (i) {
-        events.add(
-          CalendarEventData(
-            date: i.date,
-            title: "예배 출석",
-            description: "*${i.dallanteu} 달란트를 얻었습니다",
-          )
-        );
-      }
-    );
-    write_qt_testimonial_log.forEach(
-      (i) {
-        events.add(
-          CalendarEventData(
-            date: i.date,
-            title: "QT 소감문 작성",
-            description: "*${i.dallanteu} 달란트를 얻었습니다\n${i.qt_testimonial}",
-          )
-        );
-      }
-    );
-
-    CalendarControllerProvider.of(context).controller.addAll(events);
-
     return Scaffold(
       appBar: AppBar(
         title: Text("나"),
         centerTitle: true,
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back),
-          onPressed: (){
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    MainScreen()), (route) => false);
-          },
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(40.0),
@@ -69,8 +36,42 @@ class _UserScreenState extends State<UserScreen> {
               ),
             ),
             const SizedBox(height: 40.0),
-            MonthView(
-              controller: EventController(),
+            TableCalendar(
+              firstDay: DateTime.utc(2006, 06, 11),
+              lastDay: DateTime.now(),
+              focusedDay: DateTime.now(),
+              locale: 'ko-KR',
+              daysOfWeekHeight: 30,
+              calendarBuilders: CalendarBuilders(
+                dowBuilder: (context, day) {
+                  switch(day.weekday){
+                    case 1:
+                      return Center(child: Text('월'),);
+                    case 2:
+                      return Center(child: Text('화'),);
+                    case 3:
+                      return Center(child: Text('수'),);
+                    case 4:
+                      return Center(child: Text('목'),);
+                    case 5:
+                      return Center(child: Text('금'),);
+                    case 6:
+                      return Center(child: Text('토'),);
+                    case 7:
+                      return Center(child: Text('일',style: TextStyle(color: Colors.red),),);
+                  }
+                },
+              ),
+              eventLoader: (dateTime) {
+                DateTime now = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,);
+
+                if(attend_worship_log.keys.contains(now)){
+                  return [Event("Good")];
+                }
+                else{
+                  return [];
+                }
+              },
             ),
           ],
         ),

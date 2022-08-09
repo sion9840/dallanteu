@@ -16,14 +16,6 @@ class _AttendWorshipScreenState extends State<AttendWorshipScreen> {
       appBar: AppBar(
         title: Text("예배 출석 (+ 10 달란트)"),
         centerTitle: true,
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back),
-          onPressed: (){
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    MainScreen()), (route) => false);
-          },
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(40.0),
@@ -36,14 +28,21 @@ class _AttendWorshipScreenState extends State<AttendWorshipScreen> {
               const SizedBox(height: 80.0),
               TextButton(
                 onPressed: (){
+                  DateTime now = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,);
+
+                  var attend_worship_log = Hive.box("user").get("attend_worship_log");
+                  attend_worship_log.addAll(
+                      {
+                        now: AttendWorshipLog(
+                          now,
+                          10,
+                        )
+                      }
+                  );
+
                   Hive.box("user").put(
                     "attend_worship_log",
-                    Hive.box("user").get("attend_worship_log") + [
-                      AttendWorshipLog(
-                        DateTime.now(),
-                        10,
-                      ),
-                    ]
+                    attend_worship_log,
                   );
                   Hive.box("user").put(
                     "dallanteu",

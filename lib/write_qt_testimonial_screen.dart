@@ -19,14 +19,6 @@ class _WriteQtTestimonialScreenState extends State<WriteQtTestimonialScreen> {
       appBar: AppBar(
         title: Text("QT 소감문 작성 (+ 5 달란트)"),
         centerTitle: true,
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back),
-          onPressed: (){
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    MainScreen()), (route) => false);
-          },
-        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -63,15 +55,21 @@ class _WriteQtTestimonialScreenState extends State<WriteQtTestimonialScreen> {
                     return;
                   }
 
-                  Hive.box("user").put(
-                      "write_qt_testimonial_log",
-                      Hive.box("user").get("write_qt_testimonial_log") + [
-                        WriteQtTestimonialLog(
-                          DateTime.now(),
+                  DateTime now = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,);
+                  var write_qt_testimonial_log = Hive.box("user").get("write_qt_testimonial_log");
+                  write_qt_testimonial_log.addAll(
+                      {
+                        now: WriteQtTestimonialLog(
+                          now,
                           qt_testimonial.text,
                           5,
-                        ),
-                      ]
+                        )
+                      }
+                  );
+
+                  Hive.box("user").put(
+                    "write_qt_testimonial_log",
+                    write_qt_testimonial_log,
                   );
                   Hive.box("user").put(
                     "dallanteu",

@@ -4,13 +4,14 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:dallanteu/guide_screen.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
   await Hive.initFlutter();
   await Hive.openBox("user");
   Hive.registerAdapter(AttendWorshipLogAdapter());
   Hive.registerAdapter(WriteQtTestimonialLogAdapter());
-  runApp(const MyApp());
+  initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
